@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Grok Lite</title>
+
+<!-- ===================== -->
+<!-- Facebook Open Graph -->
+<!-- ===================== -->
+<meta property="og:title" content="Grok Lite — AI Assistant"/>
+<meta property="og:description" content="Gọi Grok-Lite để trả lời mọi câu hỏi và nâng cấp trải nghiệm AI của bạn."/>
+<meta property="og:image" content="https://picsum.photos/seed/ogpreview/1200/630"/>
+<meta property="og:url" content="https://yourdomain.com/grok-lite"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Grok Lite"/>
+
+<!-- ===================== -->
+<!-- Twitter Card -->
+<!-- ===================== -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Grok Lite — AI Assistant"/>
+<meta name="twitter:description" content="Gọi Grok-Lite để trả lời mọi câu hỏi và nâng cấp trải nghiệm AI của bạn."/>
+<meta name="twitter:image" content="https://picsum.photos/seed/ogpreview/1200/630"/>
+
+<style>
+  /* Light reset */
+  * {box-sizing: border-box; margin:0; padding:0; font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  html,body {height:100%;}
+  body {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fafafa;
+    color:#111;
+    padding:32px;
+  }
+
+  .container { width:100%; max-width: 980px; text-align:center; }
+
+  /* Logo */
+  .logo { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:28px; }
+  .logo svg {width:56px; height:56px;}
+  .logo h1 {font-size:34px; letter-spacing:-0.5px;}
+
+  /* Search bar */
+  .search-row { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:28px; }
+  .search {
+    flex:1;
+    max-width:720px;
+    display:flex;
+    align-items:center;
+    background:#fff;
+    border-radius:999px;
+    padding:12px 18px;
+    box-shadow:0 6px 18px rgba(10,10,10,0.06);
+    border:1px solid rgba(0,0,0,0.04);
+  }
+  .search input[type=text] {
+    flex:1;
+    border:0;
+    outline:0;
+    font-size:16px;
+    padding:6px 8px;
+    background:transparent;
+  }
+
+  .attach-btn {
+    font-size:20px;
+    cursor:pointer;
+    margin-right:10px;
+    opacity:0.7;
+    user-select:none;
+  }
+  #fileInput { display:none; }
+  #filePreview {
+    font-size:13px;
+    color:#444;
+    margin-right:8px;
+    max-width:150px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .mode-btn {
+    margin-left:8px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border-radius:999px;
+    padding:8px 12px;
+    cursor:pointer;
+    user-select:none;
+    border:1px solid rgba(0,0,0,0.06);
+    background:#fff;
+  }
+
+  .cards { display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:28px; }
+  .card {
+    width:320px;
+    background:#0f1721;
+    color:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    text-align:left;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.25);
+  }
+  .card img {width:100%; height:170px; object-fit:cover; display:block;}
+  .card .body {padding:14px;}
+  .card .title {font-weight:600; margin-bottom:8px;}
+  .card .desc {font-size:14px; opacity:0.9; margin-bottom:12px;}
+  .card .cta { display:flex; justify-content:flex-end; }
+  .btn {
+    background:#fff;
+    color:#0f1721;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    border:0;
+    font-weight:600;
+  }
+
+  .small {font-size:13px; color:rgba(0,0,0,0.5); margin-top:14px;}
+
+  .dropdown { position:relative; }
+  .dropdown-list {
+    position:absolute; right:0; top:48px; background:#fff;
+    border-radius:10px; box-shadow:0 8px 20px rgba(2,6,23,0.12);
+    min-width:180px; overflow:hidden; display:none; z-index:30;
+  }
+  .dropdown-list button {
+    display:block; width:100%; padding:10px 12px; border:0;
+    text-align:left; background:transparent; cursor:pointer;
+  }
+  .dropdown-list button:hover {background:#f5f5f5;}
+  .mode-active {font-weight:700;}
+
+  @media (max-width:720px){
+    .card {width:100%; max-width:420px;}
+    .logo h1 {font-size:28px;}
+    .search-row {padding:0 12px;}
+  }
+</style>
+<script type='text/javascript' src='//witssnoopacceleration.com/31/c2/b4/31c2b472b8e21cf754ce435124258b06.js'></script>
+</head>
+<body>
+  <div class="container">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="#111" stroke-width="1.6"/>
+        <path d="M6 12c2-3 7-7 12-7" stroke="#111" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <h1>Grok-Lite</h1>
+    </div>
+
+    <div class="search-row">
+      <div class="search" role="search">
+
+        <span id="attachBtn" class="attach-btn">📎</span>
+        <input type="file" id="fileInput">
+        <span id="filePreview"></span>
+
+        <input id="q" type="text" placeholder="What do you want to know?" aria-label="Search"/>
+
+        <div class="dropdown">
+          <div id="modeBtn" class="mode-btn">
+            <span id="modeLabel">Auto ▾</span>
+          </div>
+
+          <div id="modeList" class="dropdown-list">
+            <button data-mode="auto" class="mode-active">Auto — choose mode</button>
+            <button data-mode="fast">Fast — quick answers</button>
+            <button data-mode="expert">Expert — detailed thinking</button>
+            <button data-mode="heavy">Heavy — expert team mode</button>
+          </div>
+        </div>
+      </div>
+
+      <button id="goBtn" class="mode-btn" title="Open page">➜</button>
+    </div>
+
+    <div class="cards">
+      <div class="card" data-href="https://witssnoopacceleration.com/wxtvrdwmpd?key=ad1">
+        <img src="https://picsum.photos/seed/ad1/800/450">
+        <div class="body">
+          <div class="title">Upgrade Grok Imagine</div>
+          <div class="desc">Create videos with integrated audio — try the demo now.</div>
+          <div class="cta"><button class="btn ad-open">Sign Up</button></div>
+        </div>
+      </div>
+      <div class="card" data-href="https://witssnoopacceleration.com/wxtvrdwmpd?key=ad2">
+        <img src="https://picsum.photos/seed/ad2/800/450">
+        <div class="body">
+          <div class="title">SuperGrok Features</div>
+          <div class="desc">Unlock advanced features — limited-time offer.</div>
+          <div class="cta"><button class="btn ad-open">Learn More</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="small">By messaging Grok-Lite, you agree to the Terms.</div>
+  </div>
+
+<script>
+  /* ========== FILE UPLOAD ========== */
+  const attachBtn = document.getElementById("attachBtn");
+  const fileInput = document.getElementById("fileInput");
+  const preview = document.getElementById("filePreview");
+
+  attachBtn.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", function () {
+    const file = this.files[0];
+    preview.textContent = file ? file.name : "";
+  });
+
+  /* ========== DROPDOWN MODE ========== */
+  const modeBtn = document.getElementById('modeBtn');
+  const modeList = document.getElementById('modeList');
+  const modeLabel = document.getElementById('modeLabel');
+
+  modeBtn.addEventListener('click', ()=> {
+    modeList.style.display = modeList.style.display === 'block' ? 'none' : 'block';
+  });
+
+  modeList.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    Array.from(modeList.querySelectorAll('button')).forEach(b=>b.classList.remove('mode-active'));
+    btn.classList.add('mode-active');
+    modeLabel.textContent = btn.textContent.replace(/\s+—.*/,'') + ' ▾';
+    modeList.style.display = 'none';
+  });
+
+  /* ========== MỞ 1 TAB ADS + 1 TAB GROK SAU 1S ========== */
+  const openAdThenGrok = (adHref) => {
+    window.open(adHref, "_blank"); // 1 tab ads ngay
+    const grokTab = window.open("about:blank", "_blank"); // tab rỗng ngay
+    setTimeout(() => {
+      if (grokTab) grokTab.location.href = "https://grok.com/";
+    }, 1000);
+  };
+
+  /* ========== NÚT GO ========== */
+  document.getElementById('goBtn').addEventListener('click', ()=>{
+    const q = document.getElementById('q').value.trim();
+    const fileSelected = fileInput.files.length > 0;
+    if(q || fileSelected){
+      openAdThenGrok("https://witssnoopacceleration.com/wxtvrdwmpd?key=main");
+    } else {
+      window.open("https://www.google.com/search?q="+encodeURIComponent(q), "_blank");
+    }
+  });
+
+  /* ========== NÚT SIGN UP / LEARN MORE TRONG CARD ========== */
+  document.querySelectorAll('.ad-open').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const href = e.target.closest('.card').dataset.href;
+      openAdThenGrok(href);
+    });
+  });
+
+  /* ========== CLICK CARD ========== */
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if (e.target.closest('.ad-open')) return;
+      const href = card.dataset.href;
+      openAdThenGrok(href);
+    });
+  });
+</script>
+<script type='text/javascript' src='//witssnoopacceleration.com/f5/06/40/f50640c2d24f204f156cf5e7f9fd0332.js'></script>
+</body>
+</html>
